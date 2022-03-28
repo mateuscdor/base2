@@ -103,7 +103,7 @@ const getRegisteredRandomId = () => {
     leo.ev.on('connection.update', async (update) => {
         const { connection, lastDisconnect } = update	    
         if (connection === 'close') {
-        let reason = lastDisconnect.error ? lastDisconnect?.error?.output.statusCode : 0;
+        let reason = lastDisconnect.error ? lastDisconnect.error?.output.statusCode : 0;
             if (reason === DisconnectReason.badSession) { console.log(`Bad Session File, Please Delete Session and Scan Again`); process.exit(); }
             else if (reason === DisconnectReason.connectionClosed) { console.log("Connection closed, reconnecting...."); start(); }
             else if (reason === DisconnectReason.connectionLost) { console.log("Connection Lost from Server, reconnecting..."); start(); }
