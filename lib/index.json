@@ -1,0 +1,45 @@
+const {default:
+    makeWASocket,
+    DisconnectReason,
+    useSingleFileAuthState,
+    fetchLatestBaileysVersion,
+    makeInMemoryStore,
+    generateWAMessageFromContent,
+    prepareWAMessageMedia,
+    proto,
+    MediaType,
+    } = require("@adiwajshing/baileys");
+    const pino = require('pino')
+    const { state, saveState } = useSingleFileAuthState ('../KaoriMD.json')
+
+const leo = makeWASocket ()
+exports.leo = leo
+const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
+
+var { version, isLatest } =  fetchLatestBaileysVersion()
+
+async function start() {
+    leo({
+        printQRInTerminal: true,
+        logger: pino({ level: 'silent' }),
+        browser: ['Bot By TheChoute',],
+        auth: state,
+        version,
+    })     
+    store.bind(leo.ev)
+    leo.ev.on('connection.update', async (update) => {
+        const { connection, lastDisconnect } = update	    
+        if (connection === 'close') {
+        let reason = lastDisconnect.error ? lastDisconnect?.error?.output.statusCode : 0;
+            if (reason === DisconnectReason.badSession) { console.log(`Bad Session File, Please Delete Session and Scan Again`); process.exit(); }
+            else if (reason === DisconnectReason.connectionClosed) { console.log("Connection closed, reconnecting...."); start(); }
+            else if (reason === DisconnectReason.connectionLost) { console.log("Connection Lost from Server, reconnecting..."); start(); }
+            else if (reason === DisconnectReason.connectionReplaced) { console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First"); process.exit(); }
+            else if (reason === DisconnectReason.loggedOut) { console.log(`Device Logged Out, Please Delete Session and Scan Again.`); process.exit(); }
+            else if (reason === DisconnectReason.restartRequired) { console.log("Restart Required, Restarting..."); start(); }
+            else if (reason === DisconnectReason.timedOut) { console.log("Connection TimedOut, Reconnecting..."); start(); }
+            else { console.log(`Unknown DisconnectReason: ${reason}|${connection}`) }
+        }
+        console.log('Connected...', update)
+    })}
+start
