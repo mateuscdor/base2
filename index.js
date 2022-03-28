@@ -20,27 +20,27 @@ const capimg = 'capimg'
 const ffmpeg = require('fluent-ffmpeg')
 const moment = require("moment-timezone")
 const { exec, spawn, execSync } = require("child_process")
-const { color, bgcolor } = require('./libreria/color')
+const { color, bgcolor } = require('./lib/color')
 const prefijo = "."
-const DNI = require('./libreria/choute')
-const {en_noreg, en_admin, en_botadmin, en_userban, en_grupo, en_owne, en_bot, en_notextlogo, } = require('./libreria/mensajes/en/return')
-const {es_noreg, es_admin, es_botadmin, es_userban, es_grupo, es_owne, es_bot, es_notextlogo, } = require('./libreria/mensajes/es/return')
-const {bienvenida, baybay} = require('./libreria/mensajes/despedidas')
-const {links, linkgpwa, facelink, instalink, kick} = require('./libreria/mensajes/action.js')
+const DNI = require('./lib/choute')
+const {en_noreg, en_admin, en_botadmin, en_userban, en_grupo, en_owne, en_bot, en_notextlogo, } = require('./lib/mensajes/en/return')
+const {es_noreg, es_admin, es_botadmin, es_userban, es_grupo, es_owne, es_bot, es_notextlogo, } = require('./lib/mensajes/es/return')
+const {bienvenida, baybay} = require('./lib/mensajes/despedidas')
+const {links, linkgpwa, facelink, instalink, kick} = require('./lib/mensajes/action.js')
 
-const {rango, nivelActual, baby, } = require ('./libreria/uva.js')
+const {rango, nivelActual, baby, } = require ('./lib/uva.js')
 const hit_today = [] 
 //
-const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom } = require('./libreria/myfunc')
+const { smsg, formatp, tanggal, formatDate, getTime, isUrl, sleep, clockString, runtime, fetchJson, getBuffer, jsonformat, format, parseMention, getRandom } = require('./lib/myfunc')
 //
 const LeoGg = require('google-it');
 const LeoGgImg = require('g-i-s');
 const yo = '*𝕿𝖍ٌ𝖊𝕮𝖍𝖔𝖚𝖙𝖊*'
-//const leo = require('./libreria/index')
+//const leo = require('./lib/index')
 //
-const { addBanned, unBanned, BannedExpired, cekBannedUser } = require('./libreria/baneado.js')
-const { getLevelingXp, getLevelingId, addLevelingXp, addLevelingLevel, addLevelingId, getLevelingLevel, getUserRank, addCooldown, leveltab,  } = require('./libreria/leveling.js');
-//const wa = require("./libreria/wa")
+const { addBanned, unBanned, BannedExpired, cekBannedUser } = require('./lib/baneado.js')
+const { getLevelingXp, getLevelingId, addLevelingXp, addLevelingLevel, addLevelingId, getLevelingLevel, getUserRank, addCooldown, leveltab,  } = require('./lib/leveling.js');
+//const wa = require("./lib/wa")
 
 const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
 // - - - - - GRUPO
@@ -853,7 +853,7 @@ Url: ${anu.url}`,
 }
 break
 case 'ytmp3': case 'ytaudio': {
-  let { yta } = require('./libreria/y2mate')
+  let { yta } = require('./lib/y2mate')
   if (!txt) return reply(`Manda el link de la cancion junto al comando\n*Ejemplo:*${prefijo + command} https://www.youtube.com/watch?v=cxZ98u3Jqto 128kbps`)
   let quality = args[1] ? args[1] : '128kbps'
   let media = await yta(txt, quality)
@@ -863,7 +863,7 @@ case 'ytmp3': case 'ytaudio': {
 }
 break
 case 'ytmp4': case 'ytvideo': {
-  let { ytv } = require('./libreria/y2mate')
+  let { ytv } = require('./lib/y2mate')
   if (!txt)return reply (`Manda el link de la cancion junto al comando\n*Ejemplo:*${prefijo + command} https://www.youtube.com/watch?v=cxZ98u3Jqto 360p`)
   let quality = args[1] ? args[1] : '360p'
   let media = await ytv(txt, quality)
@@ -1248,7 +1248,7 @@ case 'bienvenida':
 case 'ttc': 
 case 'ttt': 
 case 'tictactoe': {
-  let TicTacToe = require("./libreria/tictactoe")
+  let TicTacToe = require("./lib/tictactoe")
   this.game = this.game ? this.game : {}
   if (Object.values(this.game).find(room => room.id.startsWith('tictactoe') && [room.game.playerX, room.game.playerO].includes(m.Usuario))) throw 'Kamu masih didalam game'
   let room = Object.values(this.game).find(room => room.state === 'WAITING' && (txt ? room.name === txt : true))
